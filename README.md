@@ -1,7 +1,8 @@
 
 # Hands-on #2: "Microbiome data visualisation, diversity, differential abundance and normalisations"
 
-Part 1. 
+Part 1. Data normalization 
+
 This is the repo for the second hands-on tutorial in the Microbiome Data Analyses Workshop (https://mdawo.meetinghand.com/). In this tutorial, I will demonstrate how different data normalizations impact the conclusions we can extract from a microbiome dataset, and will give guidelines on which normalizations to choose. 
 
 To do so, we will work with a simulated gut microbiome dataset, representing a case-control scenario, with ~half of the samples from patients with a given disorder and the rest being healthy controls. 
