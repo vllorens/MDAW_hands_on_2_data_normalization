@@ -13,5 +13,6 @@ Here, you will find:
 - `hands_on_2_data_normalization.Rmd`: the tutorial as a R markdown notebook that can be compiled into an html file
 - `hands_on_2_data_normalization.html`: the compiled version of this tutorial
 - a `data/` folder: here, you have the original simulated dataset as well as well as the simulated sequencing 
+- an `output/` folder: to host the output files from the tutorial
 - a `scripts/` folder: contains a script version of the Rmd file and the source code of functions used in the tutorial
 - this `README.md` file
