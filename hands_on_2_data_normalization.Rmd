@@ -24,7 +24,7 @@ for(pkg in packages_cran){
         install.packages(pkg)
 }
 
-packages_bioconductor <- c("phyloseq", "DESeq2")
+packages_bioconductor <- c("phyloseq", "DESeq2", "ALDEx2")
 for(pkg in packages_bioconductor){
     if(!pkg %in% installed.packages())
         BiocManager::install(pkg, update = F)
@@ -96,7 +96,7 @@ This phyloseq object contains the info from 300 taxa in 200 samples.
 
 With phyloseq, we can plot the top 10 species. Because these are the actual communities and we have the absolute abundances, we will not scale the data to get relative abundances.
 
-```{r plot_top10_original}
+```{r plot_top10_original, fig.width=8}
 ps_top10 <- ps_original # copy the phyloseq object to a new one, as we will modify the taxonomy table
 
 # Replace species column with full name (genus + species)
@@ -107,13 +107,19 @@ top10 <- names(sort(taxa_sums(ps_top10), decreasing=TRUE))[1:10]
 
 # group everything that's not in the top 10 as NA and plot
 tax_table(ps_top10)[!rownames(tax_table(ps_top10)) %in% top10,"Species"] <- NA
-p <- plot_bar(ps_top10, fill="Species", title = "Top 10 species") + theme_bw()
+p <- plot_bar(ps_top10, fill="Species", title = "Top 10 species") + 
+    theme_bw() + # from here on, cosmetic changes
+    theme(axis.text.x=element_blank(), 
+          axis.ticks.x=element_blank(),
+          axis.title = element_text(face = "bold"), 
+          plot.title = element_text(face = "bold"), 
+          legend.title = element_text(face = "bold")) 
 p
 ```
 
 We may want to order the data by microbial loads:
 
-```{r plot_top10_original_sorted}
+```{r plot_top10_original_sorted, fig.width=8}
 # First we order the sample names according to their microbial loads
 order_samples <- rownames(original_metadata[order(original_metadata$microbial_load),])
 
@@ -124,7 +130,7 @@ p
 
 We may also want to separately plot the controls and the patients:
 
-```{r plot_top10_original_grouped}
+```{r plot_top10_original_grouped , fig.width=8}
 p + facet_wrap(~disease_status, scales="free_x") # each sample belongs only in one group, hence we make the x_scale free to avoid blanks
 ```
 
@@ -159,7 +165,12 @@ alpha_div <- estimate_richness(ps_original, split = T, measures = c("Observed", 
 write.table(alpha_div, "output/original_alpha_div.txt", col.names=T, row.names=T, quote=F, sep="\t")
 
 # also we can use phyloseq's plotting functions for alpha diversity
-plot_richness(ps_original, measures=c("Observed", "Shannon"))
+plot_richness(ps_original, measures=c("Observed", "Shannon")) + 
+    theme(axis.text.x=element_blank(), # from here on, cosmetic changes
+          axis.ticks.x=element_blank(),
+          axis.title = element_text(face = "bold"), 
+          plot.title = element_text(face = "bold"), 
+          legend.title = element_text(face = "bold")) 
 ```
 
 However, this plot is not very informative. We are interested in knowing whether there are differences among groups of samples. To do so, we can combine phyloseq's built-in plots with functions from the ggplot2 and ggpubr packages
@@ -312,7 +323,7 @@ ps_seq <- phyloseq(otu_table(seq_abundances, taxa_are_rows = T),
 
 We can use the same code as above to plot the sequencing data.
 
-```{r plot_top10_sequencing}
+```{r plot_top10_sequencing, fig.width=8}
 ps_top10 <- ps_seq # copy the phyloseq object to a new one, as we will modify the taxonomy table
 
 # Replace Species with full name
@@ -323,7 +334,14 @@ top10 <- names(sort(taxa_sums(ps_top10), decreasing=TRUE))[1:10]
 
 # group everything that's not in the top 10 as NA and plot
 tax_table(ps_top10)[!rownames(tax_table(ps_top10)) %in% top10,"Species"] <- NA
-p <- plot_bar(ps_top10, fill="Species", title = "Top 10 species") + theme_bw()
+p <- plot_bar(ps_top10, fill="Species", title = "Top 10 species") + 
+    theme_bw() + # from here on, cosmetic changes
+      theme(axis.text.x=element_blank(), 
+          axis.ticks.x=element_blank(),
+          axis.title = element_text(face = "bold"), 
+          plot.title = element_text(face = "bold"), 
+          legend.title = element_text(face = "bold")) 
+
 
 # First we order the sample names according to their ESTIMATED microbial loads
 # NOTE: the order is not necessarily the same as for the real microbial loads because of the noise introduced by the experimental process
